@@ -64,6 +64,11 @@ const defaultConfig: SiteConfig = {
     properties: 5000,
     clients: 1000
   },
+  about: {
+    title: '20+ Years of Expertise in Valuation',
+    description: 'Founded on the principles of integrity and precision, Aaditya Building Solution has grown to be a trusted name in the property valuation industry. Our team of certified professionals is dedicated to providing comprehensive and unbiased reports that empower our clients to make informed decisions. We combine deep local market knowledge with rigorous standards to serve a diverse clientele, from individual homeowners to large financial institutions.',
+    imageUrl: 'https://images.unsplash.com/photo-1581093450021-4a7360b9a6b5?w=800&q=80'
+  },
   banks: [
     "Bank of Baroda", "Bank of India", "Indian Bank", "Bank of Maharashtra",
     "Punjab National Bank", "Indian Overseas Bank", "UCO Bank", "Canara Bank",

@@ -155,7 +155,7 @@ const AIAssistant: React.FC = () => {
   return (
     <>
       <button
-        onClick={() => setIsOpen(true)}
+        onClick={() => setIsOpen(false)}
         className={`fixed bottom-6 right-6 bg-gradient-to-r from-primary to-primary-light hover:from-primary-dark hover:to-primary text-white p-4 rounded-full shadow-glow z-40 transition-all duration-300 hover:scale-110 flex items-center justify-center gap-2 group ${
           isOpen ? 'scale-0 opacity-0 pointer-events-none' : 'scale-100 opacity-100'
         }`}
@@ -307,7 +307,7 @@ const AIAssistant: React.FC = () => {
                     )}
                   </div>
                 </div>
-              ))}
+              )))}
               {isLoading && (
                 <div className="flex items-end gap-3">
                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-light to-primary text-white flex items-center justify-center shrink-0 shadow-sm">

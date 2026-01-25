@@ -436,6 +436,12 @@ export interface SiteFeatures {
   showTestimonials: boolean;
 }
 
+export interface AboutConfig {
+  title: string;
+  description: string;
+  imageUrl: string;
+}
+
 export interface SiteConfig {
   hero: HeroConfig;
   seo: SeoConfig;
@@ -444,4 +450,5 @@ export interface SiteConfig {
   features: SiteFeatures;
   stats: SiteStats;
   banks: string[];
+  about: AboutConfig;
 }
