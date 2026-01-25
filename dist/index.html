@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aaditya Building Solution | Professional Surveying & Valuation</title>
+    <meta name="description" content="Professional IBBI Registered Valuers offering residential & commercial valuations, building surveys, and expert witness services." />
+    
+    <!-- Leaflet CSS for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Tailwind CSS (Script version for quick setup, though PostCSS is recommended for prod) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                DEFAULT: 'var(--color-primary)', 
+                light: 'var(--color-primary-light)',
+                dark: 'var(--color-primary-dark)',
+              },
+              accent: {
+                DEFAULT: '#f59e0b', // amber-500
+                hover: '#d97706',   // amber-600
+              },
+              surface: {
+                light: '#ffffff',
+                dark: '#0f172a',
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              heading: ['Plus Jakarta Sans', 'sans-serif'],
+            },
+            boxShadow: {
+              'soft': '0 10px 40px -10px rgba(0,0,0,0.08)',
+              'glow': '0 0 20px rgba(37, 99, 235, 0.2)',
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/index.css">
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.561.0",
+    "firebase/": "https://esm.sh/firebase@^12.6.0/",
+    "leaflet": "https://esm.sh/leaflet@^1.9.4",
+    "vite": "https://esm.sh/vite@^7.2.7",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
+    "@google/genai": "https://esm.sh/@google/genai@^1.33.0",
+    "next/": "https://esm.sh/next@^16.1.4/",
+    "recharts": "https://esm.sh/recharts@^3.6.0",
+    "date-fns": "https://esm.sh/date-fns@^4.1.0",
+    "jspdf-autotable": "https://esm.sh/jspdf-autotable@^5.0.7",
+    "jspdf": "https://esm.sh/jspdf@^4.0.0"
+  }
+}
+</script>
+  <script type="module" crossorigin src="/assets/index-Cm7RGjpv.js"></script>
+</head>
+  <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300 antialiased selection:bg-primary selection:text-white">
+    <div id="root"></div>
+  </body>
+</html>

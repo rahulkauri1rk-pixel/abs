@@ -1,0 +1,7 @@
+{
+  "name": "Aaditya Building Solution",
+  "description": "Modern, responsive React application for Professional Surveying & Valuation Services with AI-powered assistance.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

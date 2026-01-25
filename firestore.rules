@@ -1,0 +1,137 @@
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --- Helper Functions ---
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function getEmail() {
+      return request.auth.token.email.lower();
+    }
+
+    function getUserDoc() {
+      return get(/databases/$(database)/documents/user_permissions/$(getEmail()));
+    }
+
+    function userDocExists() {
+      return exists(/databases/$(database)/documents/user_permissions/$(getEmail()));
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+             request.auth.token.email != null && 
+             userDocExists() && 
+             (getUserDoc().data.role == 'admin' || getUserDoc().data.role == 'super_admin');
+    }
+
+    function isStaff() {
+      return isAuthenticated() && 
+             request.auth.token.email != null && 
+             userDocExists() && 
+             (getUserDoc().data.role in ['employee', 'admin', 'super_admin']);
+    }
+
+    // --- Collection Rules ---
+
+    // 1. User Permissions (Roles)
+    match /user_permissions/{email} {
+      // Users can read their own profile; Admins can read all
+      allow read: if isAuthenticated() && (getEmail() == email || isAdmin());
+      
+      // CREATE: Allow only if user creates their own doc AND sets role to 'client'
+      // This prevents users from signing up directly as 'admin'
+      allow create: if isAuthenticated() && getEmail() == email && 
+                    request.resource.data.role == 'client';
+      
+      // UPDATE: Allow if Admin OR (User updates own doc AND Role remains unchanged)
+      // This prevents users from promoting themselves to 'admin' via updates
+      allow update: if isAdmin() || 
+                    (isAuthenticated() && getEmail() == email && request.resource.data.role == resource.data.role);
+    }
+
+    // 2. Invoices (Financial Data)
+    match /invoices/{invoiceId} {
+      // Admins read all; Clients read only their own
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+      // Only Admins can create/update invoices
+      allow write: if isAdmin();
+    }
+
+    // 3. Daily Work Logs
+    match /daily_work_logs/{logId} {
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+      // Ensure user creates log strictly for themselves (Anti-spoofing)
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      // Allow updates only by Admin or Owner
+      allow update, delete: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+    }
+
+    // 4. Attendance
+    match /attendance/{recordId} {
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow update: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+    }
+
+    // 5. Market Intelligence (Property Rates)
+    match /market_intelligence/{docId} {
+      // Staff see full map; Clients only see entries they added
+      allow read: if isStaff() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+      // Create: Ensure userId matches auth uid
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+    }
+
+    // 6. Surveys (Field Reports)
+    match /surveys/{surveyId} {
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.employeeId == request.auth.uid);
+      allow create: if isAuthenticated() && request.resource.data.employeeId == request.auth.uid;
+      allow update: if isAdmin() || (isAuthenticated() && resource.data.employeeId == request.auth.uid);
+    }
+
+    // 7. Secure Chat (Rooms & Messages)
+    match /chatRooms/{roomId} {
+      // Check participant list
+      allow read: if isAuthenticated() && (request.auth.uid in resource.data.participants);
+      // Creation allowed if user includes themselves
+      allow create: if isAuthenticated() && (request.auth.uid in request.resource.data.participants);
+      allow update: if isAuthenticated() && (request.auth.uid in resource.data.participants);
+
+      // Messages subcollection
+      match /messages/{messageId} {
+        allow read, write: if isAuthenticated() && (request.auth.uid in get(/databases/$(database)/documents/chatRooms/$(roomId)).data.participants);
+      }
+    }
+
+    // 8. Directories & Apps
+    match /directory_contacts/{contactId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    match /external_apps/{appId} {
+      allow read: if isAuthenticated();
+      // Allow anyone to increment click count, but protect other fields
+      allow update: if isAuthenticated() && (
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['clicks']) || isAdmin()
+      );
+      allow create, delete: if isAdmin();
+    }
+
+    // 9. Public Contact Form
+    match /contact_submissions/{submissionId} {
+      allow create: if true; // Public access
+      allow read, update, delete: if isAdmin();
+    }
+
+    // 10. Site Stats (View Counter)
+    match /site_stats/{docId} {
+      allow read: if true; 
+      allow write: if true; // Public counter increment
+    }
+  }
+}
