@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Moon, Sun, Phone, FileText, LogIn } from 'lucide-react';
+import { Menu, X, Moon, Sun, Phone, FileText, LogIn, Package } from 'lucide-react';
 import { useSite } from '../contexts/SiteContext';
+import Link from 'next/link';
 
 interface HeaderProps {
   darkMode: boolean;
@@ -20,7 +21,6 @@ const Header: React.FC<HeaderProps> = ({ darkMode, toggleDarkMode }) => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
             const currentScroll = window.scrollY;
-            // Optimize calculation by ensuring documentElement exists
             const docHeight = document.documentElement.scrollHeight;
             const winHeight = window.innerHeight;
             const scrollHeight = docHeight - winHeight;
@@ -39,9 +39,11 @@ const Header: React.FC<HeaderProps> = ({ darkMode, toggleDarkMode }) => {
   }, []);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith('/')) return; // Allow normal Next.js Link behavior for internal routes
+    
     e.preventDefault();
     const targetId = href.replace('#', '');
-    if (!targetId && href !== '#home') return; // Safe guard
+    if (!targetId && href !== '#home') return; 
     
     const element = document.getElementById(targetId);
     
@@ -112,6 +114,18 @@ const Header: React.FC<HeaderProps> = ({ darkMode, toggleDarkMode }) => {
               {link.name}
             </a>
           ))}
+          
+          <Link
+            href="/v4"
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-2 ${
+              isScrolled 
+              ? 'text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5' 
+              : 'text-white/90 hover:text-white hover:bg-white/10'
+            }`}
+          >
+            <Package size={16} />
+            Parcel Tracking
+          </Link>
           
           <button
             onClick={openLoginModal}
@@ -213,6 +227,14 @@ const Header: React.FC<HeaderProps> = ({ darkMode, toggleDarkMode }) => {
               {link.name}
             </a>
           ))}
+          
+          <Link
+            href="/v4"
+            className="text-lg font-medium text-slate-800 dark:text-slate-200 hover:text-primary dark:hover:text-primary-light flex items-center gap-2"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+             <Package size={18} /> Parcel Tracking
+          </Link>
           
           <button
             onClick={() => { openLoginModal(); setIsMobileMenuOpen(false); }}

@@ -307,7 +307,7 @@ const AIAssistant: React.FC = () => {
                     )}
                   </div>
                 </div>
-              )))}
+              ))}
               {isLoading && (
                 <div className="flex items-end gap-3">
                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-light to-primary text-white flex items-center justify-center shrink-0 shadow-sm">
