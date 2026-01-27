@@ -35,10 +35,11 @@ interface FilterBarProps {
   currentFilter: string;
   onFilterChange: (f: any) => void;
   onExport: () => void;
+  onSeed: () => void;
   isLoading: boolean;
 }
 
-export const FilterBar: React.FC<FilterBarProps> = ({ currentFilter, onFilterChange, onExport, isLoading }) => {
+export const FilterBar: React.FC<FilterBarProps> = ({ currentFilter, onFilterChange, onExport, onSeed, isLoading }) => {
   return (
     <div className="flex flex-col sm:flex-row justify-between items-center bg-white p-4 rounded-lg border border-gray-200 mb-6 gap-4">
       <div className="flex items-center space-x-2">
@@ -53,15 +54,24 @@ export const FilterBar: React.FC<FilterBarProps> = ({ currentFilter, onFilterCha
           <option value="month">Last 30 Days</option>
         </select>
       </div>
-
-      <button
-        onClick={onExport}
-        disabled={isLoading}
-        className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white 
-        ${isLoading ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'}`}
-      >
-        {isLoading ? 'Loading...' : 'Export CSV'}
-      </button>
+      <div className="flex gap-2">
+        <button
+          onClick={onSeed}
+          disabled={isLoading}
+          className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white 
+          ${isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'}`}
+        >
+          {isLoading ? 'Loading...' : 'Seed Database'}
+        </button>
+        <button
+          onClick={onExport}
+          disabled={isLoading}
+          className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white 
+          ${isLoading ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'}`}
+        >
+          {isLoading ? 'Loading...' : 'Export CSV'}
+        </button>
+      </div>
     </div>
   );
 };

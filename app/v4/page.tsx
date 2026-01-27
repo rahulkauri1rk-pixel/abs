@@ -24,7 +24,7 @@ const computeAnalytics = (parcels: Parcel[]) => {
   const delivered = deliveredList.length;
   const deliveredToday = deliveredList.filter(p => p.updatedAt >= todayStartSec).length;
 
-  const totalDuration = deliveredList.reduce((acc, p) => acc + (p.updatedAt - p.createdAt), 0);
+  const totalDuration = deliveredList.reduce((acc, p) => acc + (p.updatedat - p.createdAt), 0);
   const avgTime = delivered > 0 ? (totalDuration / delivered) / 3600 : 0;
 
   const dashboardMetrics: DashboardMetrics = {
@@ -55,7 +55,6 @@ export default function V4Dashboard() {
   const [parcels, setParcels] = useState<Parcel[]>([]);
   const [filterType, setFilterType] = useState<TimeFilter>('week');
   const [loading, setLoading] = useState(true);
-  const [isSeeding, setIsSeeding] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -74,7 +73,7 @@ export default function V4Dashboard() {
   }, [filterType]);
   
   const handleSeed = async () => {
-    setIsSeeding(true);
+    setLoading(true);
     try {
       await seedDatabase();
       alert('Database seeded successfully!');
@@ -86,7 +85,7 @@ export default function V4Dashboard() {
       console.error("Failed to seed database", error);
       alert('Failed to seed database. See console for details.');
     } finally {
-      setIsSeeding(false);
+      setLoading(false);
     }
   };
 
@@ -98,20 +97,13 @@ export default function V4Dashboard() {
     <div className="max-w-7xl mx-auto space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
-        <button
-          onClick={handleSeed}
-          disabled={isSeeding}
-          className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white 
-          ${isSeeding ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'}`}
-        >
-          {isSeeding ? 'Seeding...' : 'Seed Database'}
-        </button>
       </div>
 
       <FilterBar 
         currentFilter={filterType} 
         onFilterChange={setFilterType} 
         onExport={() => exportToCSV(parcels)}
+        onSeed={handleSeed}
         isLoading={loading}
       />
 
