@@ -123,7 +123,7 @@ const Testimonials: React.FC = () => {
                             <div className="bg-slate-50 dark:bg-slate-900 p-8 rounded-2xl shadow-md border border-slate-100 dark:border-slate-700 relative hover:shadow-lg transition-shadow h-full flex flex-col">
                                 <Quote className="absolute top-6 left-6 text-blue-200 dark:text-slate-700 w-12 h-12 rotate-180" />
                                 <p className="relative z-10 text-slate-700 dark:text-slate-300 italic mb-6 pt-6 flex-grow">
-                                    "{item.text}"
+                                    &ldquo;{item.text}&rdquo;
                                 </p>
                                 <div className="flex items-center gap-4 mt-auto">
                                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-md shrink-0">

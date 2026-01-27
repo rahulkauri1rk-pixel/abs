@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { useSite } from '../contexts/SiteContext';
 
 // Simple hook for counting up numbers when in view
@@ -83,10 +84,12 @@ const About: React.FC = () => {
               </p>
               
               <div className="pt-6">
-                <img 
+                <Image 
                     src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Sign_signature_sample.svg" 
                     alt="Signature" 
-                    className="h-12 opacity-60 dark:invert"
+                    width={150}
+                    height={48}
+                    className="h-12 w-auto opacity-60 dark:invert"
                 />
                 <p className="text-sm font-bold text-slate-400 mt-2">Vr. Arpit Agarwal</p>
               </div>
