@@ -1,6 +1,6 @@
 import { initializeApp, getApps } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore, initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from 'firebase/firestore';
+import { getFirestore, initializeFirestore, persistentLocalCache, persistentMultipleTabManager, Firestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
@@ -24,7 +24,7 @@ export const auth = getAuth(app);
 export const storage = getStorage(app);
 
 // Initialize Firestore with offline persistence
-let db;
+let db: Firestore;
 try {
   db = getFirestore(app);
 } catch (e) {

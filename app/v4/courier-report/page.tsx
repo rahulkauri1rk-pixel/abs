@@ -65,6 +65,7 @@ export default function CourierReportPage() {
         currentFilter={filterType} 
         onFilterChange={setFilterType} 
         onExport={() => exportToCSV(parcels)}
+        onSeed={() => console.log('Seed function not implemented yet')}
         isLoading={loading}
       />
 
